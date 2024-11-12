@@ -34,11 +34,6 @@ interface Customers {
   orders: number;
 }
 
-interface ChartData {
-  month: string;
-  totalIncome: number;
-}
-
 interface Games {
   poster: string;
   name: string;
@@ -50,7 +45,7 @@ interface Games {
 const Dashboard = () => {
   const [customers, setCustomers] = useState<Customers[] | null>(null);
   const [games, setGames] = useState<Games[] | null>(null);
-  const [chartData, setChartData] = useState<ChartData[] | null>(null);
+  const [chartData, setChartData] = useState<any | null>(null);
 
   const [totalOrder, setTotalOrder] = useState<number>(0);
   const [totalCustomer, setTotalCustomer] = useState<number>(0);
