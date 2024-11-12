@@ -9,6 +9,15 @@ import { Input } from "@/components/ui/input";
 
 import { useRoleContext } from "../../../../../../context/RoleContext";
 import samplePic from "@/public/images/sample-pic.png";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface AddUserModalProps {
   addUser: (newUser: {
@@ -233,6 +242,26 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
               </div>
               <div>
                 <p className="capitalize">Role</p>
+                <Select  onValueChange={(value) => setRole(value)}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder={role} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {roles.map((role) => (
+                      <SelectItem
+                        key={role.id}
+                        value={role.id}
+                        className="bg-black text-white"
+                      >
+                        {role.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* <div>
+                <p className="capitalize">Role</p>
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
@@ -252,7 +281,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
                     </option>
                   ))}
                 </select>
-              </div>
+              </div> */}
             </div>
 
             {/* Email */}

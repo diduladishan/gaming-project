@@ -14,13 +14,15 @@ import { useRouter } from "next/navigation";
 const schema = yup.object().shape({
   newPassword: yup
     .string()
-    .required("New password is required")
-    .min(8, "Password must be at least 8 characters long")
-    .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .matches(/[0-9]/, "Password must contain at least one number"),
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]+$/,
+      "Password format incorrect: must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@, $, !, %, *, ?, &,#)."
+    ),
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref("newPassword")], "Passwords must match")
+    .oneOf([yup.ref("newPassword"), undefined], "Passwords must match") // Reference `newPassword`
     .required("Please confirm your password"),
 });
 
@@ -40,13 +42,15 @@ const PasswordReset = () => {
     try {
       const url = "http://localhost:3000/auth/reset-password";
       await axios.post(url, {
-        email: "migaraten@gmail.com", // Use the correct email dynamically
+        email: "migaraten@gmail.com", // Dynamically replace this with the user's email
         newPassword: data.newPassword,
       });
       toast.success("Password reset successfully!");
-      router.push("/sign-in"); 
+      router.push("/sign-in");
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      toast.error(
+        error.response?.data?.message || "An error occurred while resetting password"
+      );
     }
   };
 
@@ -66,6 +70,7 @@ const PasswordReset = () => {
         <div className="h-[1px] bg-white mb-8"></div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
+          {/* New Password */}
           <p className="text-white text-[15px] mb-1 uppercase">New Password</p>
           <Input
             type="password"
@@ -79,6 +84,7 @@ const PasswordReset = () => {
             </p>
           )}
 
+          {/* Confirm Password */}
           <p className="text-white text-[15px] mb-1 uppercase">
             Confirm Password
           </p>
@@ -94,6 +100,7 @@ const PasswordReset = () => {
             </p>
           )}
 
+          {/* Submit Button */}
           <Button
             type="submit"
             variant="gaming"

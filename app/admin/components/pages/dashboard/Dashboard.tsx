@@ -12,7 +12,7 @@ import axiosInstance from "@/axios/axiosInstance";
 
 const totalEarning = 1832768;
 
-const chartData = [
+/* const chartData = [
   { month: "January", totalIncome: 183 },
   { month: "February", totalIncome: 305 },
   { month: "March", totalIncome: 237 },
@@ -25,13 +25,18 @@ const chartData = [
   { month: "October", totalIncome: 269 },
   { month: "November", totalIncome: 176 },
   { month: "December", totalIncome: 265 },
-];
+]; */
 
 interface Customers {
   profilePic: string;
   username: string;
   name: string;
   orders: number;
+}
+
+interface ChartData {
+  month: string;
+  totalIncome: number;
 }
 
 interface Games {
@@ -45,6 +50,7 @@ interface Games {
 const Dashboard = () => {
   const [customers, setCustomers] = useState<Customers[] | null>(null);
   const [games, setGames] = useState<Games[] | null>(null);
+  const [chartData, setChartData] = useState<ChartData[] | null>(null);
 
   const [totalOrder, setTotalOrder] = useState<number>(0);
   const [totalCustomer, setTotalCustomer] = useState<number>(0);
@@ -58,7 +64,7 @@ const Dashboard = () => {
   const getTopData = async () => {
     try {
       const response = await axiosInstance.get("/orders/top-users?limit=6");
-      const { topUsers, topGames, totalOrders, totalCustomers, totalProducts } =
+      const { topUsers, topGames, totalOrders, totalCustomers, totalProducts, topRatedDataByMonth } =
         response.data;
 
       // Set state based on the API response
@@ -67,6 +73,7 @@ const Dashboard = () => {
       setTotalOrder(totalOrders);
       setTotalCustomer(totalCustomers);
       setTotalProduct(totalProducts);
+      setChartData(topRatedDataByMonth);
       setLoading(false); // Set loading to false when data is fetched
     } catch (error) {
       console.error("Error fetching data:", error);
