@@ -15,11 +15,13 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
+interface ChartData {
+  month: string;
+  totalIncome: number;
+}
+
 interface MonthlyEarningsProps {
-  chartData: {
-    month: string;
-    totalIncome: number;
-  }[];
+  chartData: ChartData[];
 }
 
 const MonthlyEarnings: React.FC<MonthlyEarningsProps> = ({ chartData }) => {
